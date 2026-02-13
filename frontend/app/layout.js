@@ -2,128 +2,148 @@
 
 import { Inter } from 'next/font/google';
 import './globals.css';
+import './animations.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { ToastProvider } from '@/components/ToastNotification';
+import { ThemeProvider } from '@/context/ThemeContext';
+import Navigation from '@/components/Navigation';
+import BackToTop from '@/components/BackToTop';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
-function Navigation() {
-    const { user, logout } = useAuth();
-    const [theme, setTheme] = useState('dark');
-
-    useEffect(() => {
-        // Load theme from localStorage
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
-        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    }, []);
-
-    const toggleTheme = () => {
-        const newTheme = theme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-        document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    };
-
+function Footer() {
     return (
-        <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
-                    <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-                        🏍️ MotoHunt
-                    </Link>
-
-                    <div className="flex items-center gap-6">
-                        <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-amber-500 transition">Home</Link>
-                        <Link href="/bikes" className="text-gray-700 dark:text-gray-300 hover:text-amber-500 transition">Browse</Link>
-                        <Link href="/compare" className="text-gray-700 dark:text-gray-300 hover:text-amber-500 transition">Compare</Link>
-
-                        {user ? (
-                            <>
-                                <Link href="/dashboard" className="text-gray-700 dark:text-gray-300 hover:text-amber-500 transition">Dashboard</Link>
-                                <button
-                                    onClick={logout}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-amber-500 transition"
+        <footer className="glass-strong border-t border-white/10 mt-32">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                    {/* Brand */}
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                            <span className="text-4xl">🏍️</span>
+                            <h3 className="text-2xl font-black gradient-text">MotoHunt</h3>
+                        </div>
+                        <p className="text-gray-300 leading-relaxed">
+                            India's #1 premium motorcycle platform. Find your perfect ride today!
+                        </p>
+                        <div className="flex gap-4">
+                            {['facebook', 'twitter', 'instagram', 'youtube'].map(social => (
+                                <a
+                                    key={social}
+                                    href="#"
+                                    className="glass p-3 rounded-xl hover:glass-strong transition-all btn-magnetic"
+                                    aria-label={social}
                                 >
-                                    Logout
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <Link href="/login" className="text-gray-700 dark:text-gray-300 hover:text-amber-500 transition">Login</Link>
-                                <Link href="/register" className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:shadow-lg transition">
-                                    Register
-                                </Link>
-                            </>
-                        )}
+                                    <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+                                    </svg>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
 
-                        {/* Theme Toggle Button */}
-                        <button
-                            onClick={toggleTheme}
-                            className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
-                            aria-label="Toggle theme"
-                        >
-                            {theme === 'dark' ? '🌞' : '🌙'}
-                        </button>
+                    {/* Quick Links */}
+                    <div>
+                        <h4 className="font-bold text-white mb-6 text-lg">Quick Links</h4>
+                        <ul className="space-y-3">
+                            {[
+                                { href: '/bikes', label: 'Browse Bikes' },
+                                { href: '/compare', label: 'Compare' },
+                                { href: '/dealers', label: 'Find Dealers' },
+                                { href: '/about', label: 'About Us' }
+                            ].map(link => (
+                                <li key={link.href}>
+                                    <Link
+                                        href={link.href}
+                                        className="text-gray-300 hover:text-amber-400 transition-colors inline-flex items-center gap-2"
+                                    >
+                                        <span className="text-amber-400">→</span>
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Support */}
+                    <div>
+                        <h4 className="font-bold text-white mb-6 text-lg">Support</h4>
+                        <ul className="space-y-3">
+                            {[
+                                { href: '#', label: 'Help Center' },
+                                { href: '#', label: 'Contact Us' },
+                                { href: '#', label: 'FAQ' },
+                                { href: '#', label: 'Feedback' }
+                            ].map(link => (
+                                <li key={link.label}>
+                                    <Link
+                                        href={link.href}
+                                        className="text-gray-300 hover:text-amber-400 transition-colors inline-flex items-center gap-2"
+                                    >
+                                        <span className="text-amber-400">→</span>
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Newsletter */}
+                    <div>
+                        <h4 className="font-bold text-white mb-6 text-lg">Stay Updated</h4>
+                        <p className="text-gray-300 mb-4">
+                            Subscribe to get latest bikes & offers
+                        </p>
+                        <div className="flex gap-2">
+                            <input
+                                type="email"
+                                placeholder="Your email"
+                                className="glass px-4 py-3 rounded-xl flex-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                            />
+                            <button className="gradient-primary px-6 py-3 rounded-xl font-semibold shadow-glow-hover btn-magnetic">
+                                →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-gray-400">
+                        © 2026 MotoHunt. All rights reserved.
+                    </p>
+                    <div className="flex gap-6">
+                        <Link href="#" className="text-gray-400 hover:text-amber-400 transition-colors">
+                            Privacy Policy
+                        </Link>
+                        <Link href="#" className="text-gray-400 hover:text-amber-400 transition-colors">
+                            Terms of Service
+                        </Link>
+                        <Link href="#" className="text-gray-400 hover:text-amber-400 transition-colors">
+                            Cookie Policy
+                        </Link>
                     </div>
                 </div>
             </div>
-        </nav>
+        </footer>
     );
 }
 
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className={`${inter.className} bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100`}>
+            <body className={inter.className}>
                 <AuthProvider>
-                    <Navigation />
-                    <main className="pt-16">
-                        {children}
-                    </main>
-
-                    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-20">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                                <div>
-                                    <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-                                        🏍️ MotoHunt
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-400">Find your perfect ride</p>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">Quick Links</h4>
-                                    <ul className="space-y-2">
-                                        <li><Link href="/bikes" className="text-gray-600 dark:text-gray-400 hover:text-amber-500">Browse Collection</Link></li>
-                                        <li><Link href="/compare" className="text-gray-600 dark:text-gray-400 hover:text-amber-500">Compare</Link></li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">Support</h4>
-                                    <ul className="space-y-2">
-                                        <li><Link href="#" className="text-gray-600 dark:text-gray-400 hover:text-amber-500">Help Center</Link></li>
-                                        <li><Link href="#" className="text-gray-600 dark:text-gray-400 hover:text-amber-500">Contact Us</Link></li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <h4 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">Legal</h4>
-                                    <ul className="space-y-2">
-                                        <li><Link href="#" className="text-gray-600 dark:text-gray-400 hover:text-amber-500">Privacy Policy</Link></li>
-                                        <li><Link href="#" className="text-gray-600 dark:text-gray-400 hover:text-amber-500">Terms of Service</Link></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-gray-600 dark:text-gray-400">
-                                <p>&copy; 2026 MotoHunt. All rights reserved.</p>
-                            </div>
-                        </div>
-                    </footer>
+                    <ThemeProvider>
+                        <ToastProvider>
+                            <Navigation />
+                            <main className="pt-20">
+                                {children}
+                            </main>
+                            <Footer />
+                            <BackToTop />
+                        </ToastProvider>
+                    </ThemeProvider>
                 </AuthProvider>
             </body>
         </html>

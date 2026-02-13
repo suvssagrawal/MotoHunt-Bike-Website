@@ -8,16 +8,57 @@
   --primary-amber: #fde68a;
   --primary-orange: #fdba74;
   --accent-gold: #fef3c7;
-  --dark-bg: #0a0a0a;
-  --card-bg: #111111;
-  --glass-bg: rgba(17, 17, 17, 0.4);
+
+  /* Dark Mode Defaults */
+  --bg-start: #0a0a0a;
+  --bg-mid: #1a1a1a;
+  --bg-end: #0f0f0f;
+  --text-main: #ffffff;
+  --text-secondary: #d1d5db;
+  /* gray-300 equivalent */
+  --text-muted: #9ca3af;
+  /* gray-400 equivalent */
+
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+
+  --glass-strong-bg: rgba(255, 255, 255, 0.12);
+  --glass-strong-border: rgba(255, 255, 255, 0.2);
+
+  --card-hover-shadow: rgba(0, 0, 0, 0.4);
+}
+
+/* Light Mode Overrides */
+.light {
+  --bg-start: #f8fafc;
+  /* slate-50 */
+  --bg-mid: #e2e8f0;
+  /* slate-200 */
+  --bg-end: #f1f5f9;
+  /* slate-100 */
+  --text-main: #111827;
+  /* gray-900 */
+  --text-secondary: #374151;
+  /* gray-700 */
+  --text-muted: #6b7280;
+  /* gray-500 */
+
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.05);
+
+  --glass-strong-bg: rgba(255, 255, 255, 0.85);
+  --glass-strong-border: rgba(0, 0, 0, 0.15);
+
+  --card-hover-shadow: rgba(0, 0, 0, 0.1);
 }
 
 body {
   font-family: 'Inter', 'Poppins', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
   background-attachment: fixed;
-  color: white;
+  color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -29,7 +70,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #0a0a0a 0%, #1f1f1f 100%);
+  background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-mid) 100%);
   border-left: 1px solid rgba(245, 158, 11, 0.1);
 }
 
@@ -48,20 +89,20 @@ body {
 
 /* Advanced Glassmorphism */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--glass-strong-bg);
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-strong-border);
   box-shadow:
-    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    0 8px 32px 0 var(--glass-shadow),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
 }
 
@@ -247,7 +288,7 @@ body {
 .card-hover:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 20px 60px var(--card-hover-shadow),
     0 0 25px rgba(245, 158, 11, 0.15);
 }
 
@@ -314,19 +355,20 @@ body {
 
 /* Fix for dropdown menus */
 select {
-  background-color: #1f2937 !important;
-  color: white !important;
+  background-color: var(--bg-mid) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--glass-border) !important;
 }
 
 select option {
-  background-color: #1f2937 !important;
-  color: white !important;
+  background-color: var(--bg-mid) !important;
+  color: var(--text-main) !important;
   padding: 8px !important;
 }
 
 /* Smooth Page Transitions */
 * {
-  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Button Magnetic Effect */
@@ -344,9 +386,9 @@ select option {
 
 /* Glass Card with 3D Effect */
 .glass-3d {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--glass-border);
   transform-style: preserve-3d;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -354,7 +396,7 @@ select option {
 .glass-3d:hover {
   transform: rotateX(2deg) rotateY(5deg) translateZ(10px);
   box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 30px 60px var(--card-hover-shadow),
     0 0 50px rgba(245, 158, 11, 0.3);
 }
 
