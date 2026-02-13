@@ -6,7 +6,7 @@ const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
     const [wishlist, setWishlist] = useState([]);
-    const { showToast } = useToast();
+    const { addToast } = useToast();
 
     // Load wishlist from localStorage on mount
     useEffect(() => {
@@ -28,13 +28,13 @@ export function WishlistProvider({ children }) {
             const newWishlist = wishlist.filter(item => item.id !== bike.id);
             setWishlist(newWishlist);
             localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-            showToast('Removed from wishlist', 'info');
+            addToast('Removed from wishlist', 'info');
         } else {
             // Add
             const newWishlist = [...wishlist, bike];
             setWishlist(newWishlist);
             localStorage.setItem('wishlist', JSON.stringify(newWishlist));
-            showToast('Added to wishlist', 'success');
+            addToast('Added to wishlist', 'success');
         }
     };
 
